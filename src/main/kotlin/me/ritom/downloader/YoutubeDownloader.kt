@@ -4,15 +4,10 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
 import java.util.*
-import kotlin.system.exitProcess
 
 
 @Suppress("unused")
-class YoutubeDownloader(var log:Boolean=true, var outputDirectory: String="", var commands:MutableList<String> = emptyList<String>().toMutableList(), var python3:Boolean=false) {
-
-    init {
-        if (outputDirectory.isBlank())outputDirectory=getDefaultDownloads()
-    }
+class YoutubeDownloader(var ytDlp:File,var log:Boolean=true, var outputDirectory: String="", var commands:MutableList<String> = emptyList<String>().toMutableList(), var python3:Boolean=false) {
     
     private fun log(s:String?) {
         if (log&&s!=null){
@@ -25,11 +20,12 @@ class YoutubeDownloader(var log:Boolean=true, var outputDirectory: String="", va
         val videoUrl = if(id.startsWith("https")) id else "https://www.youtube.com/watch?v=$id"
         try {
             val processBuilder = buildProcess(videoUrl)
+            if (processBuilder!=null) {
+                val process = processBuilder.start()
+                runProcess(process)
 
-            val process = processBuilder.start()
-            runProcess(process)
-
-            log("YouTube to MP3 conversion complete!")
+                log("Video to MP3 conversion complete!")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -52,8 +48,17 @@ class YoutubeDownloader(var log:Boolean=true, var outputDirectory: String="", va
         else "python"
     }
 
-    private fun buildProcess(url:String):ProcessBuilder {
+    private fun buildProcess(url:String):ProcessBuilder? {
+        if (!ytDlp.isFile){
+            println("$ytDlp is not a file.Use a ytdlp file")
+            return null
+        }
+        if (outputDirectory.isBlank())outputDirectory=getDefaultDownloads()
         var directory = File(outputDirectory)
+        if (!directory.isDirectory){
+            println("$outputDirectory is a file. Use a directory path")
+            return null
+        }
         var directoryExists = directory.exists()
         if (!directoryExists) {
             if (directory.mkdirs()) {
@@ -61,21 +66,20 @@ class YoutubeDownloader(var log:Boolean=true, var outputDirectory: String="", va
             }
             else {
                 log("Creating downloads directory failed. saving to current directory")
-                val currentDirectory = System.getProperty("user.dir");
+                val currentDirectory = System.getProperty("user.dir")
                 directory = File(currentDirectory)
                 directoryExists=directory.canWrite()&&directory.canRead()
             }
         }
-        if (directoryExists) {
+        return if (directoryExists) {
             val builder = ProcessBuilder(getRunnable(),
-                "/home/ritom/Downloads/yt-dlp",
+                ytDlp.absolutePath,
                 url).redirectErrorStream(true).directory(directory)
             builder.command().addAll(commands)
-            return builder
-        }
-        else {
+            builder
+        } else {
             log("Can not write to directory $directory. Exiting process")
-            exitProcess(1)
+            null
         }
     }
 
@@ -107,10 +111,11 @@ class YoutubeDownloader(var log:Boolean=true, var outputDirectory: String="", va
         val playlistUrl = if(id.startsWith("https"))id else "https://www.youtube.com/playlist?list=$id"
         try {
             val processBuilder = buildProcess(playlistUrl)
-            log("Running ${processBuilder.command().joinToString(" ")}")
-            val process = processBuilder.start()
-            runProcess(process)
-            log("YouTube to MP3 conversion complete!")
+            if (processBuilder!=null) {
+                val process = processBuilder.start()
+                runProcess(process)
+                log("Playlist to MP3 conversion complete!")
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
