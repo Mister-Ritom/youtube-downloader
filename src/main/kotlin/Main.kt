@@ -1,9 +1,55 @@
 import me.ritom.downloader.YoutubeDownloader
+import me.ritom.downloader.YtDlpDownloader
 import java.io.File
+import java.util.*
 
 fun main(args: Array<String>) {
     println("Hellow mom")
-    val downloader = YoutubeDownloader(File("/home/ritom/Downloads/yt-dlp"))
-    downloader.python3 = true
-    downloader.downloadVideo("E6eHm8Bk0SI")
+    val ytDlpDownloader = YtDlpDownloader()
+    val downloadFolder = getDefaultDownloads()
+    val ytDlp = ytDlpDownloader.downloadYtDlp(downloadFolder)
+    val youtubeDownloader = YoutubeDownloader(ytDlp,downloadFolder)
+
+}
+
+private fun downloadAudioSingle(youtubeDownloader:YoutubeDownloader) {
+    //AUDIO
+    youtubeDownloader.audioOnly()
+    youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
+}
+
+private fun downloadVideoSingle(youtubeDownloader:YoutubeDownloader) {
+    //AUDIO
+    youtubeDownloader.videoOnly()
+    youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
+}
+
+private fun downloadAudioPlaylist(youtubeDownloader:YoutubeDownloader) {
+    //AUDIO
+    youtubeDownloader.audioOnly()
+    youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
+}
+
+private fun downloadVideoPlaylist(youtubeDownloader:YoutubeDownloader) {
+    //AUDIO
+    youtubeDownloader.videoOnly()
+    youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
+}
+
+private fun getDefaultDownloads(): String {
+    val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+
+    return when {
+        os.contains("win") -> {
+            val userProfile = System.getenv("USERPROFILE") ?: ""
+            "$userProfile\\Downloads\\Youtube"
+        }
+        os.contains("mac") || os.contains("nix") || os.contains("nux") -> {
+            val userHome = System.getProperty("user.home") ?: ""
+            "$userHome/Downloads/Youtube"
+        }
+        else -> {
+            "/Youtube"
+        }
+    }
 }
