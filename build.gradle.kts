@@ -15,18 +15,15 @@ tasks.withType<Jar> {
     exclude("MainKt.class")
 }
 publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
-        }
-    }
-
     repositories {
-        mavenCentral()
+        maven {
+            name = "YoutubeDownloader"
+            url = uri("https://maven.pkg.github.com/ritomg69/youtube-downloader")
+            credentials {
+                username = findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+                password = findProperty("gpr.token") as String? ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
     }
 }
 dependencies {
