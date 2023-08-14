@@ -1,4 +1,4 @@
-package me.ritom.downloader
+package site.ritom.youtubedownloader
 
 import java.io.*
 import java.net.HttpURLConnection

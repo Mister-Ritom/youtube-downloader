@@ -1,4 +1,4 @@
-package me.ritom.downloader
+package site.ritom.youtubedownloader
 
 import java.io.BufferedReader
 import java.io.File
@@ -14,12 +14,12 @@ class YoutubeDownloader(var ytDlp:File, var outputDirectory: String, var log:Boo
         }
     }
 
-    fun verbose():YoutubeDownloader {
+    fun verbose(): YoutubeDownloader {
         commands.add("--verbose")
         return this
     }
 
-    fun audioOnly(mp3:Boolean=true):YoutubeDownloader {
+    fun audioOnly(mp3:Boolean=true): YoutubeDownloader {
         commands.add("--extract-audio")
         if (mp3) {
             commands.add("--audio-format")
@@ -28,7 +28,7 @@ class YoutubeDownloader(var ytDlp:File, var outputDirectory: String, var log:Boo
         return this
     }
 
-    fun videoOnly():YoutubeDownloader {
+    fun videoOnly(): YoutubeDownloader {
         commands.remove("--extract-audio")
         commands.remove("--audio-format")
         commands.remove("mp3")

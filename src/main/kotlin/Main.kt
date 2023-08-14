@@ -1,6 +1,5 @@
-import me.ritom.downloader.YoutubeDownloader
-import me.ritom.downloader.YtDlpDownloader
-import java.io.File
+import site.ritom.youtubedownloader.YoutubeDownloader
+import site.ritom.youtubedownloader.YtDlpDownloader
 import java.util.*
 
 fun main(args: Array<String>) {
@@ -12,25 +11,25 @@ fun main(args: Array<String>) {
 
 }
 
-private fun downloadAudioSingle(youtubeDownloader:YoutubeDownloader) {
+private fun downloadAudioSingle(youtubeDownloader: YoutubeDownloader) {
     //AUDIO
     youtubeDownloader.audioOnly()
     youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
 }
 
-private fun downloadVideoSingle(youtubeDownloader:YoutubeDownloader) {
+private fun downloadVideoSingle(youtubeDownloader: YoutubeDownloader) {
     //AUDIO
     youtubeDownloader.videoOnly()
     youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
 }
 
-private fun downloadAudioPlaylist(youtubeDownloader:YoutubeDownloader) {
+private fun downloadAudioPlaylist(youtubeDownloader: YoutubeDownloader) {
     //AUDIO
     youtubeDownloader.audioOnly()
     youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
 }
 
-private fun downloadVideoPlaylist(youtubeDownloader:YoutubeDownloader) {
+private fun downloadVideoPlaylist(youtubeDownloader: YoutubeDownloader) {
     //AUDIO
     youtubeDownloader.videoOnly()
     youtubeDownloader.downloadPlaylist("https://www.youtube.com/watch?v=_-vsHpF4sZo&list=RDGMEMHDXYb1_DDSgDsobPsOFxpAVM_-vsHpF4sZo&start_radio=1")
