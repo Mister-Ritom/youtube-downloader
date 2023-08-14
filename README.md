@@ -6,10 +6,6 @@
 repositories {
     maven {
         url = uri("https://maven.pkg.github.com/RitomG69/youtube-downloader")
-        credentials {
-            username = "RitomG69"
-            password = "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"
-        }
     }
 }
 ```
